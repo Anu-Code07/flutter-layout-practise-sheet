@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter Layout Exercises</title>
+<style>
+:root{--bg:#0f0f10;--s:#1a1a1d;--s2:#222226;--bd:#2e2e34;--bd2:#3a3a42;--t:#e8e8ec;--t2:#9090a0;--t3:#5a5a68;--ac:#7c6af7;--ac2:#a897ff;--gr:#3ecf8e;--am:#f5a623;--co:#f06a6a;--tl:#38bdf8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--t);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6;padding:0 0 80px;}
+header{padding:48px 32px 32px;border-bottom:1px solid var(--bd);max-width:1200px;margin:0 auto;}
+h1{font-size:28px;font-weight:700;letter-spacing:-.5px;}
+header p{color:var(--t2);margin-top:6px;}
+.hm{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;}
+.bp{background:#2d2060;color:#a897ff;}.bg{background:#0e3026;color:#3ecf8e;}.ba{background:#2e1f04;color:#f5a623;}.bt{background:#082030;color:#38bdf8;}.bk{background:#1a0a2a;color:#f472b6;}
+.controls{max-width:1200px;margin:0 auto;padding:20px 32px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.sw{position:relative;flex:1;min-width:200px;max-width:340px;}
+.sw input{width:100%;background:var(--s);border:1px solid var(--bd);border-radius:6px;color:var(--t);font-size:13px;padding:8px 12px 8px 34px;outline:none;}
+.sw input:focus{border-color:var(--ac);}
+.sw svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.4;}
+.fb{background:var(--s);border:1px solid var(--bd);border-radius:6px;color:var(--t2);font-size:12px;padding:7px 14px;cursor:pointer;transition:all .15s;}
+.fb:hover,.fb.active{border-color:var(--ac);color:var(--ac2);background:#1e1a3a;}
+.sec{max-width:1200px;margin:36px auto 0;padding:0 32px;}
+.st{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--bd);}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.card{background:var(--s);border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .15s;}
+.card:hover{border-color:var(--bd2);}
+.ch{padding:12px 14px 10px;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;gap:10px;}
+.cn{font-size:10px;font-weight:700;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.ci{flex:1;}
+.ct{font-size:13px;font-weight:600;color:var(--t);}
+.cw{font-size:11px;color:var(--t3);font-family:monospace;margin-top:2px;}
+.wa{padding:14px;background:var(--s2);min-height:130px;display:flex;align-items:center;justify-content:center;flex:1;}
+.tk{padding:10px 14px;font-size:12px;color:var(--t2);line-height:1.5;border-top:1px solid var(--bd);}
+.ht{padding:8px 14px;border-top:1px solid var(--bd);background:none;border-left:none;border-right:none;border-bottom:none;width:100%;text-align:left;cursor:pointer;display:flex;align-items:center;justify-content:space-between;color:var(--t3);font-size:11px;font-weight:500;transition:color .15s;}
+.ht:hover{color:var(--ac2);}
+.ht svg{transition:transform .2s;flex-shrink:0;}
+.ht.open svg{transform:rotate(180deg);}
+.ht.open{color:var(--ac2);}
+.hb{display:none;padding:10px 14px 12px;border-top:1px solid var(--bd);background:#15121f;}
+.hb.open{display:block;}
+.hb p{font-size:12px;color:var(--t2);margin-bottom:8px;line-height:1.6;}
+pre{background:#0d0a1a;border:1px solid #2a2040;border-radius:6px;padding:10px 12px;font-size:11px;color:#c4b5fd;overflow-x:auto;line-height:1.7;margin:0;}
+/* wf atoms */
+.phone{width:130px;background:#12121a;border:2px solid #2e2e3a;border-radius:22px;padding:10px 7px 12px;}
+.notch{width:32px;height:5px;background:#2e2e3a;border-radius:3px;margin:0 auto 8px;}
+.b{height:7px;border-radius:3px;background:#2a2a34;}
+.b2{height:7px;border-radius:3px;background:#3a3a46;}
+.b3{height:7px;border-radius:3px;background:#7c6af7;opacity:.5;}
+.bh{height:12px;border-radius:3px;background:#2a2a34;}
+.iph{background:#222230;border-radius:5px;}
+.cir{border-radius:50%;background:#3a3a46;flex-shrink:0;}
+.dh{height:1px;background:#2a2a34;}
+.dv{width:1px;background:#2a2a34;align-self:stretch;}
+.fr{display:flex;align-items:center;gap:5px;}
+.fc{display:flex;flex-direction:column;gap:4px;}
+.f1{flex:1;}
+.cen{display:flex;align-items:center;justify-content:center;}
+.spb{justify-content:space-between;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;}
+.lrow{border:1.5px dashed #7c6af7;border-radius:5px;padding:5px;position:relative;}
+.lcol{border:1.5px dashed #3ecf8e;border-radius:5px;padding:5px;position:relative;}
+.lstk{border:1.5px dashed #f5a623;border-radius:5px;padding:5px;position:relative;}
+.lbox{border:1.5px dashed #2e2e3a;border-radius:5px;padding:6px;position:relative;}
+.lbl-r{position:absolute;top:-9px;left:6px;font-size:9px;background:var(--s2);padding:0 4px;color:#7c6af7;font-family:monospace;}
+.lbl-g{position:absolute;top:-9px;left:6px;font-size:9px;background:var(--s2);padding:0 4px;color:#3ecf8e;font-family:monospace;}
+.lbl-a{position:absolute;top:-9px;left:6px;font-size:9px;background:var(--s2);padding:0 4px;color:#f5a623;font-family:monospace;}
+.lbl-t{position:absolute;top:-9px;left:6px;font-size:9px;background:var(--s2);padding:0 4px;color:#38bdf8;font-family:monospace;}
+.lbl-d{position:absolute;top:-9px;left:6px;font-size:9px;background:var(--s2);padding:0 4px;color:var(--t3);font-family:monospace;}
+.ann{font-size:9px;color:var(--t3);text-align:center;margin-top:5px;}
+.pin{background:#1e1e2a;border-radius:3px;padding:3px 5px;}
+footer{max-width:1200px;margin:40px auto 0;padding:0 32px;text-align:center;}
+footer p{color:var(--t3);font-size:12px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Flutter Layout Widget Exercises</h1>
+  <p>Every layout widget — wireframe to build + click hint to see the Flutter code</p>
+  <div class="hm">
+    <span class="badge bp">50+ Exercises</span>
+    <span class="badge bg">Row · Column · Stack · ListView · GridView · PageView · Slivers</span>
+    <span class="badge ba">Overlay · Sizing · Responsive · Table · Flow</span>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="sw">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="Search widgets…" oninput="applyFilters()">
+  </div>
+  <button class="fb active" onclick="filterBy('all',this)">All</button>
+  <button class="fb" onclick="filterBy('rowcol',this)">Row / Column</button>
+  <button class="fb" onclick="filterBy('stack',this)">Stack</button>
+  <button class="fb" onclick="filterBy('scroll',this)">Scroll &amp; Lists</button>
+  <button class="fb" onclick="filterBy('sliver',this)">Slivers</button>
+  <button class="fb" onclick="filterBy('overlay',this)">Overlay / Sheets</button>
+  <button class="fb" onclick="filterBy('sizing',this)">Sizing</button>
+  <button class="fb" onclick="filterBy('responsive',this)">Responsive</button>
+</div>
+
+<div class="sec" data-cat="rowcol">
+  <div class="st">Row &amp; Column</div>
+  <div class="cards">
+    <div class="card" data-tags="rowcol row mainaxis spacebetween">
+      <div class="ch"><div class="cn bp">01</div><div class="ci"><div class="ct">AppBar with actions</div><div class="cw">Row · MainAxisAlignment.spaceBetween</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lrow" style="margin-bottom:8px"><span class="lbl-r">Row</span>
+      <div class="fr spb" style="width:100%">
+        <div class="cir" style="width:20px;height:20px"></div>
+        <div class="b2" style="width:60px;height:9px;border-radius:4px"></div>
+        <div class="fr" style="gap:6px"><div class="cir" style="width:18px;height:18px"></div><div class="cir" style="width:18px;height:18px"></div></div>
+      </div>
+    </div>
+    <div class="fc" style="gap:5px;padding:0 4px"><div class="b" style="width:75%"></div><div class="b" style="width:55%;opacity:.5"></div><div class="b" style="width:85%;opacity:.4"></div></div>
+  </div></div>
+      <div class="tk">Back icon | centered title | share + bookmark icons. All in one Row spreading to edges.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Use <code>MainAxisAlignment.spaceBetween</code> to spread the three groups. Wrap right icons in a nested Row.</p><pre>Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    IconButton(icon: Icon(Icons.arrow_back)),
+    Text('Title', style: TextStyle(fontWeight: FontWeight.w600)),
+    Row(children: [
+      IconButton(icon: Icon(Icons.share)),
+      IconButton(icon: Icon(Icons.bookmark_border)),
+    ]),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="rowcol column crossaxis center profile">
+      <div class="ch"><div class="cn bg">02</div><div class="ci"><div class="ct">Profile column</div><div class="cw">Column · CrossAxisAlignment.center</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lcol" style="align-items:center"><span class="lbl-g">Column</span>
+      <div class="cir" style="width:44px;height:44px;margin-bottom:6px"></div>
+      <div class="b2" style="width:90px;height:9px;border-radius:4px;margin-bottom:4px"></div>
+      <div class="b" style="width:60px;opacity:.5;margin-bottom:8px"></div>
+      <div class="fr" style="gap:16px">
+        <div class="fc" style="align-items:center;gap:2px"><div class="b2" style="width:28px;height:9px"></div><div class="b" style="width:20px;opacity:.4"></div></div>
+        <div class="dv"></div>
+        <div class="fc" style="align-items:center;gap:2px"><div class="b2" style="width:28px;height:9px"></div><div class="b" style="width:20px;opacity:.4"></div></div>
+        <div class="dv"></div>
+        <div class="fc" style="align-items:center;gap:2px"><div class="b2" style="width:28px;height:9px"></div><div class="b" style="width:20px;opacity:.4"></div></div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Avatar → name → handle → Trips | Points | Cards stats. Centered Column.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Stats use <code>IntrinsicHeight</code> + <code>VerticalDivider</code> so heights match.</p><pre>Column(
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    CircleAvatar(radius: 40),
+    SizedBox(height: 12),
+    Text('Anurag'),
+    Text('@anurag'),
+    SizedBox(height: 16),
+    IntrinsicHeight(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _StatCell('42', 'Trips'),
+          VerticalDivider(),
+          _StatCell('12k', 'Points'),
+          VerticalDivider(),
+          _StatCell('2', 'Cards'),
+        ],
+      ),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="rowcol row expanded ticket divider">
+      <div class="ch"><div class="cn bp">03</div><div class="ci"><div class="ct">Flight ticket row</div><div class="cw">Row · Expanded · VerticalDivider</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lrow"><span class="lbl-r">Row</span>
+      <div class="fr" style="align-items:stretch;width:100%;gap:0">
+        <div class="lcol f1" style="border-radius:5px 0 0 5px"><span class="lbl-g">Expanded</span>
+          <div class="b2" style="width:50px;height:10px;border-radius:4px"></div>
+          <div class="b" style="width:70px;opacity:.5"></div><div class="b" style="width:40px;opacity:.3"></div>
+        </div>
+        <div style="width:1px;background:#2e2e3a;margin:0 8px"></div>
+        <div class="lcol f1" style="align-items:flex-end;border-radius:0 5px 5px 0"><span class="lbl-g" style="left:auto;right:6px">Expanded</span>
+          <div class="b2" style="width:50px;height:10px;border-radius:4px"></div>
+          <div class="b" style="width:70px;opacity:.5"></div><div class="b" style="width:40px;opacity:.3"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fr cen" style="margin-top:8px;gap:4px">
+      <div class="cir" style="width:8px;height:8px"></div>
+      <div style="flex:1;height:1px;border-top:1px dashed #3a3a46"></div>
+      <div class="cir" style="width:14px;height:14px"></div>
+      <div style="flex:1;height:1px;border-top:1px dashed #3a3a46"></div>
+      <div class="cir" style="width:8px;height:8px"></div>
+    </div>
+  </div></div>
+      <div class="tk">Origin col | divider | destination col. Dashed route line with plane icon.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Wrap in <code>IntrinsicHeight</code> so VerticalDivider stretches to match both columns.</p><pre>IntrinsicHeight(
+  child: Row(
+    children: [
+      Expanded(child: _CityInfo('BLR','Bengaluru', TextAlign.left)),
+      VerticalDivider(color: Colors.grey.shade300),
+      Expanded(child: _CityInfo('DEL','Delhi', TextAlign.right)),
+    ],
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="rowcol row flexible weight cta buttons">
+      <div class="ch"><div class="cn ba">04</div><div class="ci"><div class="ct">Split CTA buttons</div><div class="cw">Row · Flexible · flex weight</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lrow"><span class="lbl-r">Row</span>
+      <div class="fr" style="width:100%;gap:6px">
+        <div style="flex:1;border:1px solid #3a3a46;border-radius:6px;height:32px;display:flex;align-items:center;justify-content:center"><div class="b" style="width:40px"></div></div>
+        <div style="flex:2;background:#2d2060;border-radius:6px;height:32px;display:flex;align-items:center;justify-content:center"><div class="b3" style="width:60px"></div></div>
+      </div>
+    </div>
+    <div class="fr" style="margin-top:6px;gap:4px">
+      <div style="font-size:9px;color:var(--t3);flex:1;text-align:center">flex:1 (Cancel)</div>
+      <div style="font-size:9px;color:#7c6af7;flex:2;text-align:center">flex:2 (Book Now)</div>
+    </div>
+  </div></div>
+      <div class="tk">Cancel (1/3 width) + Book Now (2/3 width) in one Row, flex-weighted.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><pre>Row(
+  children: [
+    Flexible(
+      flex: 1,
+      child: OutlinedButton(onPressed: () {}, child: Text('Cancel')),
+    ),
+    SizedBox(width: 8),
+    Flexible(
+      flex: 2,
+      child: ElevatedButton(onPressed: () {}, child: Text('Book Now')),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="rowcol column spacer cta form sticky">
+      <div class="ch"><div class="cn bg">05</div><div class="ci"><div class="ct">Form + sticky CTA</div><div class="cw">Column · Spacer · push to bottom</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lcol" style="height:180px;justify-content:space-between"><span class="lbl-g">Column</span>
+      <div class="fc" style="gap:5px">
+        <div class="b2" style="width:40%;height:8px"></div><div class="bh" style="width:100%"></div>
+        <div class="b2" style="width:40%;height:8px;margin-top:4px"></div><div class="bh" style="width:100%"></div>
+        <div class="fr" style="gap:6px;margin-top:4px">
+          <div style="flex:1"><div class="b2" style="height:8px"></div><div class="bh" style="margin-top:3px"></div></div>
+          <div style="flex:1"><div class="b2" style="height:8px"></div><div class="bh" style="margin-top:3px"></div></div>
+        </div>
+      </div>
+      <div style="font-size:9px;color:var(--t3);text-align:center;padding:4px 0;border-top:1px dashed #2e2e3a;border-bottom:1px dashed #2e2e3a">Spacer()</div>
+      <div style="background:#2d2060;border-radius:6px;height:32px;display:flex;align-items:center;justify-content:center"><div class="b3" style="width:80px"></div></div>
+    </div>
+  </div></div>
+      <div class="tk">Form fields at top, Spacer pushes Search button to always stick at the bottom.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>Spacer()</code> expands to fill all remaining space in a Column or Row.</p><pre>Column(
+  children: [
+    TextFormField(decoration: InputDecoration(labelText: 'From')),
+    SizedBox(height: 12),
+    TextFormField(decoration: InputDecoration(labelText: 'To')),
+    Row(children: [
+      Expanded(child: DateField()),
+      SizedBox(width: 8),
+      Expanded(child: PassengerField()),
+    ]),
+    Spacer(), // pushes button down
+    SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(child: Text('Search Flights')),
+    ),
+  ],
+)</pre></div>
+    </div></div>
+</div>
+<div class="sec" data-cat="stack">
+  <div class="st">Stack</div>
+  <div class="cards">
+    <div class="card" data-tags="stack positioned gradient hero destination">
+      <div class="ch"><div class="cn ba">06</div><div class="ci"><div class="ct">Hero destination card</div><div class="cw">Stack · Positioned · gradient overlay</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lstk" style="height:160px;overflow:hidden;border-radius:8px"><span class="lbl-a">Stack</span>
+      <div class="iph" style="position:absolute;inset:0;border-radius:6px"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(80,40,180,.5));border-radius:6px"></div>
+      <div style="position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:50%;background:#2d2060;border:1px solid #7c6af7;display:flex;align-items:center;justify-content:center"><div style="width:10px;height:9px;border-radius:50%;background:#7c6af7;opacity:.8"></div></div>
+      <div style="position:absolute;bottom:8px;left:8px;right:8px"><div class="b2" style="width:70%;height:10px;border-radius:4px;margin-bottom:4px"></div><div class="b" style="width:50%;opacity:.6"></div></div>
+      <div style="position:absolute;top:8px;left:8px;background:#2d2060;border-radius:10px;padding:2px 8px"><div style="height:7px;width:32px;border-radius:3px;background:#a897ff;opacity:.7"></div></div>
+    </div>
+  </div></div>
+      <div class="tk">Image → gradient → title+subtitle bottom-left → heart icon top-right → '20% OFF' badge top-left.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Stack children paint bottom-to-top. Use <code>Positioned.fill</code> for full-size layers.</p><pre>Stack(
+  children: [
+    // 1. image (bottom layer)
+    Positioned.fill(
+      child: Image.network(url, fit: BoxFit.cover),
+    ),
+    // 2. gradient overlay
+    Positioned.fill(
+      child: DecoratedBox(decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.transparent, Colors.black54],
+        ),
+      )),
+    ),
+    // 3. title bottom-left
+    Positioned(bottom: 12, left: 12, right: 12,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text('Goa', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+        Text('3 nights · 2 adults', style: TextStyle(color: Colors.white70)),
+      ]),
+    ),
+    // 4. heart top-right
+    Positioned(top: 8, right: 8,
+      child: IconButton(icon: Icon(Icons.favorite_border, color: Colors.white)),
+    ),
+    // 5. badge top-left
+    Positioned(top: 8, left: 8,
+      child: Chip(label: Text('20% OFF'), backgroundColor: Colors.purple),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="stack positioned badge avatar online notification">
+      <div class="ch"><div class="cn ba">07</div><div class="ci"><div class="ct">Avatar with badge</div><div class="cw">Stack · Positioned · clipBehavior: none</div></div></div>
+      <div class="wa"><div class="fr cen" style="gap:20px;width:100%">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+      <div style="position:relative;width:48px;height:48px">
+        <div class="cir" style="width:48px;height:48px"></div>
+        <div style="position:absolute;bottom:0;right:0;width:14px;height:14px;border-radius:50%;background:#3ecf8e;border:2px solid #1a1a1d"></div>
+      </div>
+      <div style="font-size:9px;color:var(--t3)">online dot</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+      <div style="position:relative;width:48px;height:48px">
+        <div class="cir" style="width:48px;height:48px"></div>
+        <div style="position:absolute;top:-4px;right:-4px;min-width:16px;height:16px;border-radius:8px;background:#f06a6a;border:2px solid #1a1a1d;display:flex;align-items:center;justify-content:center"><div style="font-size:7px;color:#fff;font-weight:700;padding:0 3px">3</div></div>
+      </div>
+      <div style="font-size:9px;color:var(--t3)">count badge</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+      <div style="position:relative;width:48px;height:48px">
+        <div class="cir" style="width:48px;height:48px"></div>
+        <div style="position:absolute;bottom:0;right:0;width:16px;height:16px;border-radius:50%;background:#2d2060;border:2px solid #1a1a1d;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;border-radius:50%;background:#7c6af7"></div></div>
+      </div>
+      <div style="font-size:9px;color:var(--t3)">edit icon</div>
+    </div>
+  </div></div>
+      <div class="tk">CircleAvatar with: (a) green online dot, (b) red notification count badge, (c) edit icon overlay.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Set <code>clipBehavior: Clip.none</code> so badges can overflow outside Stack bounds.</p><pre>Stack(
+  clipBehavior: Clip.none, // allows badge to overflow
+  children: [
+    CircleAvatar(radius: 24, backgroundImage: NetworkImage(url)),
+    // online dot
+    Positioned(bottom: 0, right: 0,
+      child: Container(
+        width: 14, height: 14,
+        decoration: BoxDecoration(
+          color: Colors.green,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+      ),
+    ),
+    // notification count (overflows top-right)
+    Positioned(top: -4, right: -4,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 4),
+        height: 16,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+        child: Text('3', style: TextStyle(fontSize: 9, color: Colors.white)),
+      ),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="stack indexedstack tabs persistent state">
+      <div class="ch"><div class="cn ba">08</div><div class="ci"><div class="ct">Persistent tab pages</div><div class="cw">IndexedStack · index</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lstk"><span class="lbl-a">IndexedStack</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:6px">
+        <div style="background:#2d2060;border-radius:4px;padding:4px;text-align:center"><div style="font-size:8px;color:#a897ff">index 0 ✓ visible</div></div>
+        <div style="background:#1a1a2a;border-radius:4px;padding:4px;text-align:center;border:1px dashed #2e2e3a"><div style="font-size:8px;color:#3a3a46">index 1 hidden</div></div>
+        <div style="background:#1a1a2a;border-radius:4px;padding:4px;text-align:center;border:1px dashed #2e2e3a"><div style="font-size:8px;color:#3a3a46">index 2 hidden</div></div>
+      </div>
+      <div class="b" style="width:80%"></div><div class="b" style="width:60%;opacity:.5;margin-top:3px"></div>
+    </div>
+    <div class="ann">All pages built simultaneously — scroll state preserved on tab switch</div>
+  </div></div>
+      <div class="tk">Bottom nav with 4 tabs. Each tab's scroll position preserved when switching.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Unlike PageView, IndexedStack keeps all children alive in the widget tree.</p><pre>class _ShellState extends State<Shell> {
+  int _index = 0;
+  final _pages = [HomePage(), SearchPage(), TripsPage(), ProfilePage()];
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: IndexedStack(index: _index, children: _pages),
+    bottomNavigationBar: BottomNavigationBar(
+      currentIndex: _index,
+      onTap: (i) => setState(() => _index = i),
+      items: [/* ... */],
+    ),
+  );
+}</pre></div>
+    </div></div>
+</div>
+<div class="sec" data-cat="scroll">
+  <div class="st">Scroll Views &amp; Lists</div>
+  <div class="cards">
+    <div class="card" data-tags="scroll singlechildscrollview form keyboard">
+      <div class="ch"><div class="cn bg">09</div><div class="ci"><div class="ct">Long scrollable form</div><div class="cw">SingleChildScrollView · Column</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="overflow:hidden;height:130px;position:relative">
+      <div class="fc" style="gap:5px">
+        <div class="b2" style="width:50%;height:9px"></div><div class="bh"></div>
+        <div class="b2" style="width:50%;height:9px;margin-top:4px"></div><div class="bh"></div>
+        <div class="b2" style="width:50%;height:9px;margin-top:4px"></div><div class="bh"></div>
+        <div class="b2" style="width:50%;height:9px;margin-top:4px"></div><div class="bh"></div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;height:24px;background:linear-gradient(transparent,#12121a)"></div>
+      <div style="position:absolute;right:3px;top:10px;bottom:10px;width:3px;border-radius:2px;background:#2e2e3a"></div>
+      <div style="position:absolute;right:3px;top:10px;width:3px;height:28px;border-radius:2px;background:#3a3a46"></div>
+    </div>
+  </div></div>
+      <div class="tk">Checkout form with many fields — scrollable, keyboard-safe. Scrolls up when keyboard opens.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Add <code>keyboardDismissBehavior</code> so dragging the list dismisses the keyboard.</p><pre>SingleChildScrollView(
+  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+  padding: EdgeInsets.all(16),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      TextFormField(decoration: InputDecoration(labelText: 'Name')),
+      SizedBox(height: 12),
+      TextFormField(decoration: InputDecoration(labelText: 'Email')),
+      // ... more fields
+      SizedBox(height: 24),
+      ElevatedButton(child: Text('Continue')),
+    ],
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll listview builder lazy results">
+      <div class="ch"><div class="cn bg">10</div><div class="ci"><div class="ct">Flight results list</div><div class="cw">ListView.builder · itemBuilder</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="fc" style="gap:5px">
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;padding:6px">
+        <div class="fr spb"><div class="b2" style="width:35px;height:9px"></div><div class="b3" style="width:30px;height:9px"></div></div>
+        <div class="fr cen" style="margin:5px 0;gap:3px"><div class="b2" style="width:20px;height:9px"></div><div style="flex:1;height:1px;border-top:1px dashed #2e2e3a"></div><div class="cir" style="width:10px;height:10px"></div><div style="flex:1;height:1px;border-top:1px dashed #2e2e3a"></div><div class="b2" style="width:20px;height:9px"></div></div>
+        <div class="b" style="width:60%;opacity:.4"></div>
+      </div>
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;padding:6px;opacity:.7">
+        <div class="fr spb"><div class="b2" style="width:35px;height:9px"></div><div class="b3" style="width:30px;height:9px"></div></div>
+        <div class="b" style="width:60%;opacity:.4;margin-top:5px"></div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Lazily-built flight cards — only items near the viewport are rendered. Efficient for 100+ results.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Never use <code>ListView(children: [...])</code> for long lists — it builds everything upfront.</p><pre>ListView.builder(
+  itemCount: flights.length,
+  itemBuilder: (context, index) => FlightCard(flights[index]),
+)
+
+// With dividers:
+ListView.separated(
+  itemCount: flights.length,
+  itemBuilder: (_, i) => FlightCard(flights[i]),
+  separatorBuilder: (_, __) => Divider(height: 1),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll listview horizontal category strip">
+      <div class="ch"><div class="cn bg">11</div><div class="ci"><div class="ct">Horizontal category strip</div><div class="cw">ListView · scrollDirection: Axis.horizontal</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="b2" style="width:50%;margin-bottom:7px;height:9px"></div>
+    <div style="display:flex;gap:6px;overflow:hidden;margin-bottom:8px">
+      <div style="flex-shrink:0;width:52px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;background:#2d2060;border:2px solid #7c6af7;margin:0 auto 4px;display:flex;align-items:center;justify-content:center"><div class="cir" style="width:16px;height:16px;background:#7c6af7;opacity:.7"></div></div>
+        <div class="b3" style="width:40px;height:6px;margin:0 auto"></div>
+      </div>
+      <div style="flex-shrink:0;width:52px;text-align:center">
+        <div style="width:40px;height:40px;border-radius:50%;background:#1e1e28;border:1px solid #2e2e3a;margin:0 auto 4px"></div>
+        <div class="b" style="width:40px;height:6px;margin:0 auto"></div>
+      </div>
+      <div style="flex-shrink:0;width:52px;text-align:center;opacity:.5">
+        <div style="width:40px;height:40px;border-radius:50%;background:#1e1e28;border:1px solid #2e2e3a;margin:0 auto 4px"></div>
+        <div class="b" style="width:40px;height:6px;margin:0 auto"></div>
+      </div>
+    </div>
+    <div class="b" style="width:90%;opacity:.4"></div>
+  </div></div>
+      <div class="tk">Flights · Hotels · Trains · Buses · Experiences — horizontally scrollable. Active icon highlighted.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Wrap in <code>SizedBox(height: N)</code> to constrain the horizontal ListView's height.</p><pre>SizedBox(
+  height: 80,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: categories.length,
+    padding: EdgeInsets.symmetric(horizontal: 16),
+    itemBuilder: (context, index) {
+      final isActive = index == _selected;
+      return GestureDetector(
+        onTap: () => setState(() => _selected = index),
+        child: Container(
+          width: 64,
+          margin: EdgeInsets.only(right: 8),
+          child: Column(children: [
+            CircleAvatar(
+              backgroundColor: isActive ? Colors.purple : Colors.grey.shade200,
+              child: Icon(categories[index].icon),
+            ),
+            SizedBox(height: 4),
+            Text(categories[index].label, style: TextStyle(fontSize: 11)),
+          ]),
+        ),
+      );
+    },
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll listview reverse chat message">
+      <div class="ch"><div class="cn bg">12</div><div class="ci"><div class="ct">Chat thread</div><div class="cw">ListView.builder · reverse: true</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="fc" style="gap:5px;padding:2px 0">
+      <div style="align-self:flex-start;max-width:75%;background:#1e1e28;border:1px solid #2e2e3a;border-radius:2px 8px 8px 8px;padding:5px 8px"><div class="b" style="width:70px;margin-bottom:2px"></div><div class="b" style="width:50px;opacity:.4"></div></div>
+      <div style="align-self:flex-end;max-width:75%;background:#2d2060;border:1px solid #3d3070;border-radius:8px 2px 8px 8px;padding:5px 8px"><div style="width:60px;height:6px;border-radius:3px;background:#a897ff;opacity:.5;margin-bottom:2px"></div></div>
+      <div style="align-self:flex-start;max-width:75%;background:#1e1e28;border:1px solid #2e2e3a;border-radius:2px 8px 8px 8px;padding:5px 8px"><div class="b" style="width:80px"></div></div>
+    </div>
+    <div class="dh" style="margin:6px 0"></div>
+    <div class="fr" style="gap:4px"><div style="flex:1;height:16px;background:#1e1e28;border-radius:8px;border:1px solid #2e2e3a"></div><div class="cir" style="width:20px;height:20px;background:#2d2060"></div></div>
+  </div></div>
+      <div class="tk">Received bubbles left, sent right. Newest at bottom. reverse:true means new messages scroll into view automatically.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>reverse: true</code> makes list grow upward — newest message always at the bottom without manual scrolling.</p><pre>ListView.builder(
+  reverse: true,
+  itemCount: messages.length,
+  itemBuilder: (context, index) {
+    final msg = messages[messages.length - 1 - index];
+    return Align(
+      alignment: msg.isSender
+        ? Alignment.centerRight
+        : Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 2, horizontal: 12),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: msg.isSender ? Colors.purple : Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Text(msg.text),
+      ),
+    );
+  },
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll gridview fixed crossaxiscount shop">
+      <div class="ch"><div class="cn bg">13</div><div class="ci"><div class="ct">Shop product grid</div><div class="cw">GridView.builder · crossAxisCount: 2</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="g2" style="margin-top:4px">
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;overflow:hidden">
+        <div class="iph" style="height:44px;border-radius:0"></div>
+        <div style="padding:5px"><div class="b" style="width:80%;margin-bottom:3px"></div><div class="b2" style="width:50%;height:8px"></div></div>
+      </div>
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;overflow:hidden">
+        <div class="iph" style="height:44px;border-radius:0"></div>
+        <div style="padding:5px"><div class="b" style="width:70%;margin-bottom:3px"></div><div class="b2" style="width:45%;height:8px"></div></div>
+      </div>
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;overflow:hidden;opacity:.5">
+        <div class="iph" style="height:44px;border-radius:0"></div>
+        <div style="padding:5px"><div class="b" style="width:75%"></div></div>
+      </div>
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;overflow:hidden;opacity:.5">
+        <div class="iph" style="height:44px;border-radius:0"></div>
+        <div style="padding:5px"><div class="b" style="width:65%"></div></div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">2-column product grid. Each tile = image + name + price. Aspect ratio locked at 3:4.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>childAspectRatio</code> = width/height. 3/4 means tile is taller than wide.</p><pre>GridView.builder(
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    crossAxisSpacing: 12,
+    mainAxisSpacing: 12,
+    childAspectRatio: 3 / 4,
+  ),
+  itemCount: products.length,
+  itemBuilder: (context, index) => ProductCard(products[index]),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll gridview maxextent adaptive responsive auto">
+      <div class="ch"><div class="cn bg">14</div><div class="ci"><div class="ct">Auto-fit category grid</div><div class="cw">GridView · maxCrossAxisExtent</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:5px">
+        <div class="g2" style="gap:3px">
+          <div style="height:24px;background:#2a2a34;border-radius:3px"></div><div style="height:24px;background:#2a2a34;border-radius:3px"></div>
+          <div style="height:24px;background:#2a2a34;border-radius:3px;opacity:.5"></div><div style="height:24px;background:#2a2a34;border-radius:3px;opacity:.5"></div>
+        </div>
+        <div class="ann">phone — 2 col</div>
+      </div>
+      <div style="flex:1.6;background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:5px">
+        <div class="g3" style="gap:3px">
+          <div style="height:20px;background:#2a2a34;border-radius:3px"></div><div style="height:20px;background:#2a2a34;border-radius:3px"></div><div style="height:20px;background:#2a2a34;border-radius:3px"></div>
+          <div style="height:20px;background:#2a2a34;border-radius:3px;opacity:.5"></div><div style="height:20px;background:#2a2a34;border-radius:3px;opacity:.5"></div><div style="height:20px;background:#2a2a34;border-radius:3px;opacity:.5"></div>
+        </div>
+        <div class="ann">tablet — 3 col auto</div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Grid auto-computes column count so no tile exceeds 180px wide. 2-col on phone, 3-4 on tablet.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>maxCrossAxisExtent</code> = max tile width. Flutter figures out how many columns fit — no breakpoint needed.</p><pre>GridView.builder(
+  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: 180,
+    childAspectRatio: 1,
+    crossAxisSpacing: 12,
+    mainAxisSpacing: 12,
+  ),
+  itemCount: categories.length,
+  itemBuilder: (_, i) => CategoryTile(categories[i]),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll pageview onboarding carousel dots">
+      <div class="ch"><div class="cn bg">15</div><div class="ci"><div class="ct">Onboarding carousel</div><div class="cw">PageView · PageController · animated dots</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="iph" style="height:60px;border-radius:6px;margin-bottom:7px;display:flex;align-items:center;justify-content:center"><div class="cir" style="width:24px;height:24px;background:#2d2060;border:2px solid #7c6af7"></div></div>
+    <div class="b2" style="width:70%;margin:0 auto 4px;height:9px"></div>
+    <div class="b" style="width:85%;margin:0 auto;opacity:.5"></div>
+    <div class="fr cen" style="gap:4px;margin:8px 0 7px">
+      <div style="width:20px;height:5px;border-radius:3px;background:#7c6af7"></div>
+      <div style="width:5px;height:5px;border-radius:50%;background:#2e2e3a"></div>
+      <div style="width:5px;height:5px;border-radius:50%;background:#2e2e3a"></div>
+    </div>
+    <div style="background:#2d2060;border-radius:6px;height:18px"></div>
+  </div></div>
+      <div class="tk">3-page swipeable onboarding. Active dot animates wider. Next/Skip buttons.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Give each page a unique key. Track current page with <code>PageController.onPageChanged</code>.</p><pre>PageController _controller = PageController();
+int _page = 0;
+
+PageView(
+  controller: _controller,
+  onPageChanged: (i) => setState(() => _page = i),
+  children: [Page1(), Page2(), Page3()],
+)
+
+// Animated dots:
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: List.generate(3, (i) => AnimatedContainer(
+    duration: Duration(milliseconds: 250),
+    margin: EdgeInsets.symmetric(horizontal: 3),
+    width: _page == i ? 20 : 6,
+    height: 6,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(3),
+      color: _page == i ? Colors.purple : Colors.grey.shade300,
+    ),
+  )),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll tabbarview tabs tabcontroller">
+      <div class="ch"><div class="cn bg">16</div><div class="ci"><div class="ct">Trip status tabs</div><div class="cw">DefaultTabController · TabBar · TabBarView</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="fr" style="border-bottom:1px solid #2e2e3a;margin-bottom:5px">
+      <div style="flex:1;text-align:center;padding:4px 0;border-bottom:2px solid #7c6af7"><div class="b3" style="width:40px;height:7px;margin:0 auto"></div></div>
+      <div style="flex:1;text-align:center;padding:4px 0"><div class="b" style="width:40px;height:7px;margin:0 auto;opacity:.4"></div></div>
+      <div style="flex:1;text-align:center;padding:4px 0"><div class="b" style="width:40px;height:7px;margin:0 auto;opacity:.4"></div></div>
+    </div>
+    <div class="fc" style="gap:4px">
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:5px;padding:6px"><div class="b" style="width:80%"></div><div class="b" style="width:55%;opacity:.4;margin-top:3px"></div></div>
+      <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:5px;padding:6px;opacity:.6"><div class="b" style="width:70%"></div></div>
+    </div>
+  </div></div>
+      <div class="tk">Upcoming / Completed / Cancelled trips — 3 tabs with swipeable pages and tab indicator.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>DefaultTabController</code> wires TabBar + TabBarView together without manual controller.</p><pre>DefaultTabController(
+  length: 3,
+  child: Scaffold(
+    appBar: AppBar(
+      bottom: TabBar(tabs: [
+        Tab(text: 'Upcoming'),
+        Tab(text: 'Completed'),
+        Tab(text: 'Cancelled'),
+      ]),
+    ),
+    body: TabBarView(
+      children: [
+        UpcomingTripsPage(),
+        CompletedTripsPage(),
+        CancelledTripsPage(),
+      ],
+    ),
+  ),
+)</pre></div>
+    </div></div>
+</div>
+<div class="sec" data-cat="sliver">
+  <div class="st">Slivers</div>
+  <div class="cards">
+    <div class="card" data-tags="sliver sliverappbar pinned expandedheight collapsing">
+      <div class="ch"><div class="cn ba">17</div><div class="ci"><div class="ct">Collapsing hotel header</div><div class="cw">SliverAppBar · pinned · expandedHeight</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="position:relative;height:50px;border-radius:5px 5px 0 0;overflow:hidden">
+      <div class="iph" style="position:absolute;inset:0"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,rgba(30,20,60,.8))"></div>
+      <div style="position:absolute;top:4px;left:5px;width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.2)"></div>
+      <div style="position:absolute;bottom:4px;left:5px;right:5px"><div style="height:7px;border-radius:3px;background:rgba(255,255,255,.5);width:55%"></div></div>
+    </div>
+    <div style="border:1px solid #2e2e3a;border-top:none;border-radius:0 0 6px 6px;padding:6px">
+      <div class="b" style="width:80%;margin-bottom:3px"></div><div class="b" style="width:55%;opacity:.4;margin-bottom:6px"></div>
+      <div class="dh"></div>
+      <div class="b" style="width:90%;opacity:.5;margin-top:5px"></div><div class="b" style="width:70%;opacity:.4"></div>
+    </div>
+    <div class="ann">↑ scroll: image collapses → slim sticky AppBar</div>
+  </div></div>
+      <div class="tk">Hotel page — image expands at top, collapses into a slim sticky AppBar with title on scroll.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Everything inside <code>CustomScrollView</code> must be a Sliver. Wrap normal widgets in <code>SliverToBoxAdapter</code>.</p><pre>CustomScrollView(
+  slivers: [
+    SliverAppBar(
+      expandedHeight: 260,
+      pinned: true, // stays visible when collapsed
+      flexibleSpace: FlexibleSpaceBar(
+        title: Text('The Leela'),
+        background: Image.network(url, fit: BoxFit.cover),
+        collapseMode: CollapseMode.parallax,
+      ),
+    ),
+    SliverToBoxAdapter(child: HotelDetails()),
+    SliverToBoxAdapter(child: AmenitiesSection()),
+    SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (_, i) => ReviewCard(reviews[i]),
+        childCount: reviews.length,
+      ),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sliver sliverappbar floating snap search">
+      <div class="ch"><div class="cn ba">18</div><div class="ci"><div class="ct">Floating search bar</div><div class="cw">SliverAppBar · floating · snap</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:5px;padding:5px 7px;margin-bottom:5px" class="fr">
+      <div class="cir" style="width:12px;height:12px"></div>
+      <div style="flex:1;height:7px;background:#2a2a34;border-radius:3px;margin:0 5px"></div>
+      <div class="cir" style="width:12px;height:12px"></div>
+    </div>
+    <div class="fc" style="gap:4px">
+      <div class="b" style="width:90%"></div><div class="b" style="width:70%;opacity:.5"></div>
+      <div class="b" style="width:80%;opacity:.4"></div><div class="dh"></div>
+      <div class="b" style="width:85%"></div><div class="b" style="width:65%;opacity:.4"></div>
+    </div>
+    <div class="ann">hides on ↓ scroll · snaps back on ↑</div>
+  </div></div>
+      <div class="tk">Search bar hides on scroll down, snaps back instantly on any upward scroll.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>snap: true</code> requires <code>floating: true</code>. Snaps fully open/closed instead of partially.</p><pre>SliverAppBar(
+  floating: true,
+  snap: true,
+  pinned: false,
+  toolbarHeight: 60,
+  flexibleSpace: Padding(
+    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    child: SearchBar(hintText: 'Search destinations...'),
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sliver sliverpersistentheader sticky section pinned">
+      <div class="ch"><div class="cn ba">19</div><div class="ci"><div class="ct">Sticky day headers</div><div class="cw">SliverPersistentHeader · pinned: true</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="pin" style="margin-bottom:3px"><div class="b2" style="width:40%;margin:0"></div></div>
+    <div style="padding-left:5px;margin-bottom:4px"><div class="b" style="width:85%"></div><div class="b" style="width:65%;opacity:.4;margin-top:3px"></div></div>
+    <div class="pin" style="margin-bottom:3px"><div class="b2" style="width:35%;margin:0"></div></div>
+    <div style="padding-left:5px;margin-bottom:4px">
+      <div class="b" style="width:80%"></div><div class="b" style="width:70%;opacity:.4;margin-top:3px"></div><div class="b" style="width:50%;opacity:.3;margin-top:3px"></div>
+    </div>
+    <div class="pin" style="opacity:.4;margin-bottom:3px"><div class="b2" style="width:38%;margin:0"></div></div>
+  </div></div>
+      <div class="tk">Itinerary grouped by Day 1 / Day 2 — section labels stay pinned at top while items scroll.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Create a <code>SliverPersistentHeaderDelegate</code> subclass. Add one per section group.</p><pre>class _StickyHeader extends SliverPersistentHeaderDelegate {
+  final String title;
+  _StickyHeader(this.title);
+
+  @override double get minExtent => 36;
+  @override double get maxExtent => 36;
+
+  @override
+  Widget build(_, __, ___) => Container(
+    color: Colors.white,
+    alignment: Alignment.centerLeft,
+    padding: EdgeInsets.symmetric(horizontal: 16),
+    child: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
+  );
+
+  @override bool shouldRebuild(_) => false;
+}
+
+// In CustomScrollView:
+for (final group in itinerary) ...[
+  SliverPersistentHeader(pinned: true, delegate: _StickyHeader(group.dayLabel)),
+  SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (_, i) => ActivityTile(group.items[i]),
+      childCount: group.items.length,
+    ),
+  ),
+]</pre></div>
+    </div>
+    <div class="card" data-tags="sliver slivergrid fixed crossaxiscount grid">
+      <div class="ch"><div class="cn ba">20</div><div class="ci"><div class="ct">Photo grid + AppBar</div><div class="cw">SliverGrid · SliverGridDelegateWithFixedCrossAxisCount</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="position:relative;height:28px;border-radius:5px 5px 0 0;overflow:hidden;margin-bottom:4px">
+      <div class="iph" style="position:absolute;inset:0"></div>
+      <div style="position:absolute;bottom:4px;left:5px"><div style="height:6px;border-radius:3px;background:rgba(255,255,255,.5);width:50px"></div></div>
+    </div>
+    <div class="g3" style="gap:3px">
+      <div style="height:32px;background:#2a2a34;border-radius:3px"></div>
+      <div style="height:32px;background:#2a2a34;border-radius:3px"></div>
+      <div style="height:32px;background:#2a2a34;border-radius:3px"></div>
+      <div style="height:32px;background:#2a2a34;border-radius:3px;opacity:.5"></div>
+      <div style="height:32px;background:#2a2a34;border-radius:3px;opacity:.5"></div>
+      <div style="height:32px;background:#2a2a34;border-radius:3px;opacity:.5"></div>
+    </div>
+  </div></div>
+      <div class="tk">Category landing — collapsing hero SliverAppBar + 3-col SliverGrid in one unified scroll.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>SliverGrid</code> is the sliver version of GridView. Use inside CustomScrollView to share scroll with AppBar.</p><pre>CustomScrollView(
+  slivers: [
+    SliverAppBar(
+      expandedHeight: 200,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Image.network(heroUrl, fit: BoxFit.cover),
+      ),
+    ),
+    SliverPadding(
+      padding: EdgeInsets.all(8),
+      sliver: SliverGrid(
+        delegate: SliverChildBuilderDelegate(
+          (_, i) => Image.network(photos[i], fit: BoxFit.cover),
+          childCount: photos.length,
+        ),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 4,
+          mainAxisSpacing: 4,
+        ),
+      ),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sliver slivergrid maxextent adaptive auto">
+      <div class="ch"><div class="cn ba">21</div><div class="ci"><div class="ct">Adaptive SliverGrid</div><div class="cw">SliverGrid · maxCrossAxisExtent</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:5px">
+        <div class="g2" style="gap:3px">
+          <div style="height:24px;background:#2a2a34;border-radius:3px"></div><div style="height:24px;background:#2a2a34;border-radius:3px"></div>
+          <div style="height:24px;background:#2a2a34;border-radius:3px;opacity:.5"></div><div style="height:24px;background:#2a2a34;border-radius:3px;opacity:.5"></div>
+        </div>
+        <div class="ann">phone</div>
+      </div>
+      <div style="flex:1.6;background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:5px">
+        <div class="g3" style="gap:3px">
+          <div style="height:20px;background:#2a2a34;border-radius:3px"></div><div style="height:20px;background:#2a2a34;border-radius:3px"></div><div style="height:20px;background:#2a2a34;border-radius:3px"></div>
+          <div style="height:20px;background:#2a2a34;border-radius:3px;opacity:.5"></div><div style="height:20px;background:#2a2a34;border-radius:3px;opacity:.5"></div><div style="height:20px;background:#2a2a34;border-radius:3px;opacity:.5"></div>
+        </div>
+        <div class="ann">tablet — 3 col auto</div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Sliver grid that auto-fits columns — 2 on phone, 3+ on tablet. No breakpoints needed.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><pre>SliverGrid(
+  delegate: SliverChildBuilderDelegate(
+    (_, i) => ProductCard(products[i]),
+    childCount: products.length,
+  ),
+  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: 200,
+    childAspectRatio: 0.75,
+    crossAxisSpacing: 12,
+    mainAxisSpacing: 12,
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sliver slivertoboxadapter mixed feed home">
+      <div class="ch"><div class="cn ba">22</div><div class="ci"><div class="ct">Mixed home feed</div><div class="cw">SliverToBoxAdapter · multiple slivers combined</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="font-size:7px;color:#7c6af7;margin-bottom:1px">SliverToBoxAdapter</div>
+    <div class="iph" style="height:22px;border-radius:4px;margin-bottom:4px"></div>
+    <div style="font-size:7px;color:#38bdf8;margin-bottom:1px">SliverToBoxAdapter (chips)</div>
+    <div class="fr" style="gap:4px;margin-bottom:4px">
+      <div style="height:10px;width:28px;border-radius:5px;background:#2d2060;border:1px solid #7c6af7"></div>
+      <div style="height:10px;width:22px;border-radius:5px;background:#2a2a34"></div>
+      <div style="height:10px;width:32px;border-radius:5px;background:#2a2a34"></div>
+    </div>
+    <div style="font-size:7px;color:#3ecf8e;margin-bottom:1px">SliverGrid</div>
+    <div class="g2" style="gap:3px;margin-bottom:4px">
+      <div style="height:26px;background:#2a2a34;border-radius:3px"></div><div style="height:26px;background:#2a2a34;border-radius:3px"></div>
+    </div>
+    <div style="font-size:7px;color:#f5a623;margin-bottom:1px">SliverList</div>
+    <div class="b" style="width:90%;opacity:.5"></div><div class="b" style="width:70%;opacity:.4;margin-top:3px"></div>
+  </div></div>
+      <div class="tk">Home page: banner → filter chips → featured grid → article list. All one unified scroll.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>SliverToBoxAdapter</code> wraps a single normal widget so it lives inside CustomScrollView.</p><pre>CustomScrollView(
+  slivers: [
+    SliverAppBar(/* ... */),
+    SliverToBoxAdapter(child: PromoBanner()),
+    SliverToBoxAdapter(child: FilterChipsRow()),
+    SliverGrid(/* featured grid */),
+    SliverList(/* article list */),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sliver sliverfillremaining cta sticky bottom">
+      <div class="ch"><div class="cn ba">23</div><div class="ci"><div class="ct">CTA pinned to bottom</div><div class="cw">SliverFillRemaining · hasScrollBody: false</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="b2" style="width:60%;margin-bottom:6px;height:9px"></div>
+    <div class="fc" style="gap:4px;margin-bottom:4px"><div class="bh"></div><div class="bh"></div><div class="bh"></div></div>
+    <div style="flex:1;border:1px dashed #2e2e3a;border-radius:5px;min-height:28px;display:flex;align-items:center;justify-content:center;margin-bottom:5px">
+      <div style="font-size:8px;color:var(--t3)">SliverFillRemaining fills gap</div>
+    </div>
+    <div style="background:#2d2060;border-radius:6px;height:18px"></div>
+  </div></div>
+      <div class="tk">Booking summary + fields at top, 'Confirm Booking' CTA always pinned at the very bottom.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>hasScrollBody: false</code> fills remaining space with a non-scrolling widget.</p><pre>CustomScrollView(
+  slivers: [
+    SliverToBoxAdapter(child: BookingSummary()),
+    SliverFillRemaining(
+      hasScrollBody: false,
+      child: Column(
+        children: [
+          Spacer(),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text('Confirm Booking'),
+            ),
+          ),
+          SizedBox(height: 16),
+        ],
+      ),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sliver sliverpadding padding section">
+      <div class="ch"><div class="cn ba">24</div><div class="ci"><div class="ct">Padded sliver section</div><div class="cw">SliverPadding · EdgeInsets</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lbox"><span class="lbl-t">SliverPadding(horizontal: 16)</span>
+      <div style="border:1px dashed #2e2e3a;border-radius:5px;padding:6px;margin-top:4px">
+        <div style="font-size:8px;color:var(--t3);margin-bottom:4px">child: SliverList</div>
+        <div class="b" style="width:90%"></div><div class="b" style="width:70%;opacity:.5;margin-top:3px"></div><div class="b" style="width:80%;opacity:.4;margin-top:3px"></div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Wrap a SliverList with consistent horizontal padding — cleaner than padding every item.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><pre>SliverPadding(
+  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+  sliver: SliverList(
+    delegate: SliverChildBuilderDelegate(
+      (_, i) => ListTile(title: Text(items[i])),
+      childCount: items.length,
+    ),
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sliver nestedscrollview tabs profile overlap absorber">
+      <div class="ch"><div class="cn ba">25</div><div class="ci"><div class="ct">Profile with tab lists</div><div class="cw">NestedScrollView · SliverOverlapAbsorber</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="position:relative;height:30px;border-radius:5px 5px 0 0;overflow:hidden">
+      <div class="iph" style="position:absolute;inset:0"></div>
+      <div style="position:absolute;bottom:4px;left:5px;right:5px"><div style="height:6px;border-radius:3px;background:rgba(255,255,255,.4);width:40%"></div></div>
+    </div>
+    <div style="display:flex;border-bottom:1px solid #2e2e3a;background:#1a1a1d">
+      <div style="flex:1;text-align:center;padding:4px 0;border-bottom:2px solid #7c6af7"><div class="b3" style="width:28px;height:6px;margin:0 auto"></div></div>
+      <div style="flex:1;text-align:center;padding:4px 0"><div class="b" style="width:28px;height:6px;margin:0 auto;opacity:.4"></div></div>
+      <div style="flex:1;text-align:center;padding:4px 0"><div class="b" style="width:28px;height:6px;margin:0 auto;opacity:.4"></div></div>
+    </div>
+    <div style="padding:5px 4px">
+      <div class="b" style="width:85%"></div><div class="b" style="width:65%;opacity:.4;margin-top:3px"></div>
+    </div>
+  </div></div>
+      <div class="tk">Shared collapsing header + sticky TabBar, each tab has its own independent scroll list.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Use <code>SliverOverlapAbsorber/Injector</code> to prevent tab content hiding under the persistent header.</p><pre>NestedScrollView(
+  headerSliverBuilder: (ctx, innerScrolled) => [
+    SliverOverlapAbsorber(
+      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(ctx),
+      sliver: SliverAppBar(
+        expandedHeight: 200,
+        pinned: true,
+        flexibleSpace: FlexibleSpaceBar(background: ProfileHeader()),
+        bottom: TabBar(tabs: [Tab(text:'Posts'), Tab(text:'Photos'), Tab(text:'About')]),
+      ),
+    ),
+  ],
+  body: TabBarView(
+    children: tabs.map((tab) => Builder(
+      builder: (ctx) => CustomScrollView(
+        slivers: [
+          SliverOverlapInjector(
+            handle: NestedScrollView.sliverOverlapAbsorberHandleFor(ctx),
+          ),
+          SliverList(/* tab content */),
+        ],
+      ),
+    )).toList(),
+  ),
+)</pre></div>
+    </div></div>
+</div>
+<div class="sec" data-cat="overlay">
+  <div class="st">Overlay, Bottom Sheets &amp; Dialogs</div>
+  <div class="cards">
+    <div class="card" data-tags="overlay bottomsheet modal draggable filter">
+      <div class="ch"><div class="cn bk">26</div><div class="ci"><div class="ct">Filter bottom sheet</div><div class="cw">showModalBottomSheet · DraggableScrollableSheet</div></div></div>
+      <div class="wa"><div style="min-height:140px;background:rgba(0,0,0,.5);border-radius:8px;padding:8px;display:flex;align-items:flex-end">
+    <div style="width:100%;background:#1a1a1d;border-radius:12px 12px 0 0;padding:10px 12px">
+      <div style="width:32px;height:4px;border-radius:2px;background:#2e2e3a;margin:0 auto 10px"></div>
+      <div class="b2" style="width:40%;margin-bottom:8px;height:9px"></div>
+      <div class="fc" style="gap:5px">
+        <div class="fr spb"><div class="b" style="width:50%"></div><div style="width:20px;height:12px;border-radius:6px;background:#2d2060;border:1px solid #7c6af7"></div></div>
+        <div class="fr spb"><div class="b" style="width:40%"></div><div style="width:20px;height:12px;border-radius:6px;background:#2a2a34"></div></div>
+      </div>
+      <div style="background:#2d2060;border-radius:6px;height:18px;margin-top:10px"></div>
+    </div>
+  </div></div>
+      <div class="tk">Filter sheet slides up from bottom — draggable, scrollable. Handle at top. Apply button at bottom.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Set <code>isScrollControlled: true</code> to allow full-height expansion.</p><pre>showModalBottomSheet(
+  context: context,
+  isScrollControlled: true,
+  backgroundColor: Colors.transparent,
+  builder: (ctx) => DraggableScrollableSheet(
+    initialChildSize: 0.5,
+    minChildSize: 0.3,
+    maxChildSize: 0.95,
+    builder: (_, controller) => Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      child: Column(children: [
+        Container(
+          width: 40, height: 4,
+          color: Colors.grey.shade300,
+          margin: EdgeInsets.symmetric(vertical: 12),
+        ),
+        Expanded(
+          child: ListView(controller: controller, children: [/* filters */]),
+        ),
+        ElevatedButton(child: Text('Apply Filters')),
+      ]),
+    ),
+  ),
+);</pre></div>
+    </div>
+    <div class="card" data-tags="overlay bottomsheet persistent booking summary bar">
+      <div class="ch"><div class="cn bk">27</div><div class="ci"><div class="ct">Booking summary bar</div><div class="cw">Scaffold.bottomNavigationBar · persistent</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="fc" style="gap:4px;margin-bottom:10px">
+      <div class="b" style="width:90%"></div><div class="b" style="width:70%;opacity:.5"></div><div class="b" style="width:80%;opacity:.4"></div>
+    </div>
+    <div class="dh"></div>
+    <div style="margin-top:6px;background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;padding:7px 8px">
+      <div class="fr spb">
+        <div class="fc" style="gap:3px">
+          <div class="b" style="width:50px;opacity:.4"></div>
+          <div class="b2" style="width:70px;height:9px"></div>
+        </div>
+        <div style="background:#2d2060;border-radius:6px;padding:5px 14px;display:flex;align-items:center"><div class="b3" style="width:40px"></div></div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Price on left, 'Select Room' on right — always visible at bottom of hotel detail page.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Use <code>Scaffold.bottomNavigationBar</code> for a persistent non-dismissable bar.</p><pre>Scaffold(
+  body: HotelDetailBody(),
+  bottomNavigationBar: SafeArea(
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.shade200)),
+      ),
+      child: Row(children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text('₹8,499 / night', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          Text('incl. taxes', style: TextStyle(color: Colors.grey, fontSize: 12)),
+        ]),
+        Spacer(),
+        ElevatedButton(child: Text('Select Room'), onPressed: () {}),
+      ]),
+    ),
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="overlay dialog alertdialog confirm">
+      <div class="ch"><div class="cn bk">28</div><div class="ci"><div class="ct">Confirm dialog</div><div class="cw">showDialog · AlertDialog</div></div></div>
+      <div class="wa"><div style="min-height:130px;background:rgba(0,0,0,.5);border-radius:8px;padding:16px;display:flex;align-items:center;justify-content:center">
+    <div style="width:85%;background:#1a1a1d;border-radius:10px;padding:14px">
+      <div class="b2" style="width:60%;margin-bottom:6px;height:9px"></div>
+      <div class="b" style="width:90%;margin-bottom:3px;opacity:.5"></div>
+      <div class="b" style="width:70%;margin-bottom:12px;opacity:.4"></div>
+      <div class="fr" style="gap:8px;justify-content:flex-end">
+        <div style="border:1px solid #2e2e3a;border-radius:5px;padding:5px 12px"><div class="b" style="width:30px"></div></div>
+        <div style="background:#f06a6a;border-radius:5px;padding:5px 12px"><div style="height:7px;width:40px;border-radius:3px;background:rgba(255,255,255,.5)"></div></div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Cancel booking confirmation — title, message, Keep + Cancel (destructive) buttons.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Returns a <code>Future&lt;bool?&gt;</code> — await it to know what the user tapped.</p><pre>final confirmed = await showDialog<bool>(
+  context: context,
+  builder: (ctx) => AlertDialog(
+    title: Text('Cancel Booking?'),
+    content: Text('This action cannot be undone. A fee may apply.'),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(ctx, false),
+        child: Text('Keep Booking'),
+      ),
+      TextButton(
+        style: TextButton.styleFrom(foregroundColor: Colors.red),
+        onPressed: () => Navigator.pop(ctx, true),
+        child: Text('Cancel Booking'),
+      ),
+    ],
+  ),
+);
+if (confirmed == true) _cancelBooking();</pre></div>
+    </div>
+    <div class="card" data-tags="overlay snackbar toast undo action">
+      <div class="ch"><div class="cn bk">29</div><div class="ci"><div class="ct">Action snackbar</div><div class="cw">ScaffoldMessenger · SnackBar · action</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div class="fc" style="gap:4px;margin-bottom:10px">
+      <div class="b" style="width:90%"></div><div class="b" style="width:70%;opacity:.5"></div>
+    </div>
+    <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;padding:7px 8px;margin-top:20px">
+      <div class="fr spb"><div class="b" style="width:80px"></div><div class="b3" style="width:28px"></div></div>
+    </div>
+  </div></div>
+      <div class="tk">'Added to wishlist' snackbar with Undo action. Auto-dismisses after 3s.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Always use <code>ScaffoldMessenger.of(context)</code> — survives navigation unlike Scaffold.of.</p><pre>ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Text('Added to wishlist'),
+    duration: Duration(seconds: 3),
+    action: SnackBarAction(
+      label: 'Undo',
+      onPressed: () { /* remove from wishlist */ },
+    ),
+    behavior: SnackBarBehavior.floating,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+  ),
+);</pre></div>
+    </div>
+    <div class="card" data-tags="overlay overlayentry tooltip popup anchor">
+      <div class="ch"><div class="cn bk">30</div><div class="ci"><div class="ct">Anchored tooltip popup</div><div class="cw">Overlay · OverlayEntry · CompositedTransformFollower</div></div></div>
+      <div class="wa"><div style="width:100%;position:relative;min-height:130px">
+    <div class="fr" style="gap:6px;padding:40px 10px 10px;justify-content:center">
+      <div class="b" style="width:60px"></div>
+      <div style="position:relative;display:inline-block">
+        <div style="background:#2d2060;border:1px solid #7c6af7;border-radius:5px;padding:4px 8px"><div class="b3" style="width:40px"></div></div>
+        <div style="position:absolute;top:-42px;left:50%;transform:translateX(-50%);background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;padding:6px 10px;white-space:nowrap">
+          <div class="b2" style="width:70px;margin-bottom:3px"></div>
+          <div class="b" style="width:50px;opacity:.5"></div>
+          <div style="position:absolute;bottom:-5px;left:50%;width:8px;height:8px;border-right:1px solid #2e2e3a;border-bottom:1px solid #2e2e3a;background:#1e1e28;transform:translateX(-50%) rotate(45deg)"></div>
+        </div>
+      </div>
+      <div class="b" style="width:50px"></div>
+    </div>
+  </div></div>
+      <div class="tk">Tap a price cell → floating tooltip with fare breakdown appears above it. Tap elsewhere to dismiss.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Use <code>CompositedTransformTarget</code> on the trigger and <code>CompositedTransformFollower</code> in the OverlayEntry.</p><pre>final LayerLink _link = LayerLink();
+OverlayEntry? _entry;
+
+void _showTooltip() {
+  _entry = OverlayEntry(builder: (_) =>
+    Positioned.fill(
+      child: GestureDetector(
+        onTap: () { _entry?.remove(); _entry = null; },
+        behavior: HitTestBehavior.translucent,
+        child: CompositedTransformFollower(
+          link: _link,
+          offset: Offset(0, -80),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Material(elevation: 4, borderRadius: BorderRadius.circular(8), child: FareBreakdown()),
+          ),
+        ),
+      ),
+    ),
+  );
+  Overlay.of(context).insert(_entry!);
+}
+
+// Wrap trigger widget:
+CompositedTransformTarget(link: _link, child: GestureDetector(onTap: _showTooltip, child: PriceCell()))</pre></div>
+    </div></div>
+</div>
+<div class="sec" data-cat="sizing">
+  <div class="st">Sizing &amp; Constraints</div>
+  <div class="cards">
+    <div class="card" data-tags="sizing sizedbox spacing fixed width">
+      <div class="ch"><div class="cn bt">31</div><div class="ci"><div class="ct">SizedBox — spacing & fixed sizes</div><div class="cw">SizedBox · width · height · expand · shrink</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lcol" style="align-items:flex-start"><span class="lbl-g">Column</span>
+      <div class="b2" style="width:80%;height:9px"></div>
+      <div style="height:12px;border-left:2px dashed #38bdf8;margin-left:4px;padding-left:6px;display:flex;align-items:center"><div style="font-size:9px;color:#38bdf8">SizedBox(h:12)</div></div>
+      <div class="bh" style="width:100%"></div>
+      <div style="height:12px;border-left:2px dashed #38bdf8;margin-left:4px;padding-left:6px;display:flex;align-items:center"><div style="font-size:9px;color:#38bdf8">SizedBox(h:12)</div></div>
+      <div style="background:#2d2060;border-radius:5px;width:120px;height:24px;display:flex;align-items:center;justify-content:center"><div style="font-size:9px;color:#a897ff">SizedBox(w:120)</div></div>
+    </div>
+  </div></div>
+      <div class="tk">Use SizedBox for: spacing between widgets, fixed-width buttons, invisible hit targets.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>SizedBox(width: double.infinity)</code> makes a button full-width. <code>SizedBox.shrink()</code> is an invisible 0×0 placeholder.</p><pre>// Spacing
+SizedBox(height: 16)
+
+// Full-width button
+SizedBox(
+  width: double.infinity,
+  child: ElevatedButton(child: Text('Book'))
+)
+
+// Fixed icon container
+SizedBox(width: 44, height: 44, child: Icon(Icons.search))
+
+// Invisible placeholder (removes widget without gap)
+Visibility(visible: false, maintainSize: true, child: SomethingThatDisappears())
+// OR simply:
+SizedBox.shrink()</pre></div>
+    </div>
+    <div class="card" data-tags="sizing constrainedbox minmax constraints">
+      <div class="ch"><div class="cn bt">32</div><div class="ci"><div class="ct">Min/max constrained card</div><div class="cw">ConstrainedBox · BoxConstraints</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lbox"><span class="lbl-t">ConstrainedBox</span>
+      <div style="display:flex;justify-content:space-between;font-size:8px;color:var(--t3);margin-bottom:5px"><span>minWidth: 100</span><span>maxWidth: 300</span></div>
+      <div class="b2" style="width:60%;margin-bottom:4px;height:9px"></div>
+      <div class="b" style="width:80%"></div><div class="b" style="width:50%;opacity:.4"></div>
+    </div>
+    <div class="ann">content determines height, capped to min/max</div>
+  </div></div>
+      <div class="tk">Card that's at least 100px wide but never wider than 300px. Height grows with content but never below 80px.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><pre>ConstrainedBox(
+  constraints: BoxConstraints(
+    minWidth: 100,
+    maxWidth: 300,
+    minHeight: 80,
+  ),
+  child: Card(child: ContentWidget()),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing fittedbox scaledown price text overflow">
+      <div class="ch"><div class="cn bt">33</div><div class="ci"><div class="ct">Auto-scaling price text</div><div class="cw">FittedBox · BoxFit.scaleDown</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="display:flex;gap:10px;align-items:center;justify-content:center">
+      <div style="width:80px;border:1px solid #2e2e3a;border-radius:5px;padding:6px;text-align:center">
+        <div style="font-size:9px;color:var(--t3);margin-bottom:3px">short price</div>
+        <div style="font-size:20px;font-weight:700;color:#a897ff">₹499</div>
+      </div>
+      <div style="width:80px;border:1px solid #38bdf8;border-radius:5px;padding:6px;text-align:center">
+        <div style="font-size:9px;color:#38bdf8;margin-bottom:3px">FittedBox ↓</div>
+        <div style="font-size:13px;font-weight:700;color:#a897ff;overflow:hidden">₹1,29,999</div>
+      </div>
+    </div>
+    <div class="ann">scales down only if overflowing — never clips</div>
+  </div></div>
+      <div class="tk">Price text that shrinks to fit its container — never overflows regardless of how long the number is.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>BoxFit.scaleDown</code> shrinks only if needed. If it fits naturally, it stays at natural size.</p><pre>SizedBox(
+  width: 120,
+  child: FittedBox(
+    fit: BoxFit.scaleDown,
+    alignment: Alignment.centerLeft,
+    child: Text(
+      '₹1,29,999',
+      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    ),
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing aspectratio video thumbnail 16:9">
+      <div class="ch"><div class="cn bt">34</div><div class="ci"><div class="ct">16:9 video thumbnail</div><div class="cw">AspectRatio · aspectRatio</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="aspect-ratio:16/9;background:#2a2a34;border-radius:5px;display:flex;align-items:center;justify-content:center;margin-top:4px">
+      <div style="width:22px;height:22px;border-radius:50%;background:#2d2060;border:2px solid #7c6af7;display:flex;align-items:center;justify-content:center">
+        <div style="width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid #a897ff;margin-left:2px"></div>
+      </div>
+    </div>
+    <div class="b" style="width:70%;margin-top:6px"></div><div class="b" style="width:45%;opacity:.5;margin-top:3px"></div>
+  </div></div>
+      <div class="tk">Video thumbnail that always stays 16:9 ratio regardless of screen width. Play button centered.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>aspectRatio: 16/9</code> = width÷height. Flutter calculates height from the available width.</p><pre>AspectRatio(
+  aspectRatio: 16 / 9,
+  child: Stack(
+    children: [
+      Positioned.fill(
+        child: Image.network(thumbnailUrl, fit: BoxFit.cover),
+      ),
+      Center(
+        child: CircleAvatar(
+          backgroundColor: Colors.black54,
+          child: Icon(Icons.play_arrow, color: Colors.white),
+        ),
+      ),
+    ],
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing intrinsicheight equal height cards row">
+      <div class="ch"><div class="cn bt">35</div><div class="ci"><div class="ct">Equal-height side-by-side cards</div><div class="cw">IntrinsicHeight · Row</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="lbox"><span class="lbl-t">IntrinsicHeight</span>
+      <div class="fr" style="align-items:stretch;gap:6px;margin-top:4px">
+        <div style="flex:1;background:#1e1e28;border:1px solid #2e2e3a;border-radius:5px;padding:7px">
+          <div class="b2" style="width:60%;margin-bottom:4px;height:8px"></div>
+          <div class="b" style="width:80%"></div><div class="b" style="width:60%;opacity:.5"></div>
+          <div class="b" style="width:70%;opacity:.4"></div><div class="b" style="width:50%;opacity:.3"></div>
+        </div>
+        <div style="width:1px;background:#2e2e3a"></div>
+        <div style="flex:1;background:#1e1e28;border:1px solid #2e2e3a;border-radius:5px;padding:7px">
+          <div class="b2" style="width:55%;margin-bottom:4px;height:8px"></div>
+          <div class="b" style="width:75%"></div><div class="b" style="width:50%;opacity:.5"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ann">both cards same height despite different content length</div>
+  </div></div>
+      <div class="tk">Two side-by-side plan cards that always match heights — taller content sets the height.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>⚠️ <code>IntrinsicHeight</code> measures children twice — expensive. Avoid inside long lists.</p><pre>IntrinsicHeight(
+  child: Row(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      Expanded(child: FeatureCard(plan: 'Basic')),
+      VerticalDivider(width: 1),
+      Expanded(child: FeatureCard(plan: 'Pro', features: longerList)),
+    ],
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing fractionallysizedbox percent width progress bar">
+      <div class="ch"><div class="cn bt">36</div><div class="ci"><div class="ct">Progress bar (% width)</div><div class="cw">FractionallySizedBox · widthFactor</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="background:#1e1e28;border-radius:10px;height:8px;overflow:hidden;margin-bottom:6px">
+      <div style="background:#7c6af7;height:100%;width:70%;border-radius:10px"></div>
+    </div>
+    <div class="fr spb"><div style="font-size:9px;color:var(--t3)">₹7,000 spent</div><div style="font-size:9px;color:var(--t3)">₹10,000 limit</div></div>
+    <div style="font-size:9px;color:#38bdf8;text-align:center;margin-top:5px">FractionallySizedBox(widthFactor: 0.7)</div>
+  </div></div>
+      <div class="tk">Credit limit progress bar — fill width is a fraction (0.0–1.0) of parent width.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>widthFactor: 0.7</code> = 70% of parent. Useful for progress/fill without LayoutBuilder.</p><pre>Stack(
+  children: [
+    Container(height: 8, decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(4))),
+    FractionallySizedBox(
+      widthFactor: spent / limit, // e.g. 0.7
+      child: Container(
+        height: 8,
+        decoration: BoxDecoration(color: Colors.purple, borderRadius: BorderRadius.circular(4)),
+      ),
+    ),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing overflowbox bleed clip none">
+      <div class="ch"><div class="cn bt">37</div><div class="ci"><div class="ct">Bleed-outside-parent effect</div><div class="cw">Stack · clipBehavior: Clip.none · OverflowBox</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:6px;padding:10px;overflow:visible;position:relative">
+      <div class="b" style="width:80%;margin-bottom:5px"></div><div class="b" style="width:60%;opacity:.5"></div>
+      <div style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;background:#2d2060;border:2px solid #7c6af7;display:flex;align-items:center;justify-content:center">
+        <div style="font-size:8px;color:#a897ff;text-align:center">bleeds out</div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Decorative element (badge/circle) intentionally bleeds outside the parent card's bounds.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><pre>// Easiest: Stack with Clip.none
+Stack(
+  clipBehavior: Clip.none,
+  children: [
+    Card(child: ContentRow()),
+    Positioned(
+      right: -16, top: -16,
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: Colors.purple,
+        child: Icon(Icons.star, color: Colors.white),
+      ),
+    ),
+  ],
+)
+
+// Or: OverflowBox to allow child to be bigger than parent
+OverflowBox(
+  maxWidth: double.infinity,
+  child: DecorationWidget(),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing fittedbox center align empty state">
+      <div class="ch"><div class="cn bt">38</div><div class="ci"><div class="ct">Empty state (Center + Column)</div><div class="cw">Center · Align · Alignment</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:120px;gap:6px">
+      <div class="cir" style="width:36px;height:36px"></div>
+      <div class="b2" style="width:70px;height:9px"></div>
+      <div class="b" style="width:90px;opacity:.5"></div>
+      <div style="background:#2d2060;border-radius:5px;padding:5px 16px;margin-top:4px"><div class="b3" style="width:50px"></div></div>
+    </div>
+  </div></div>
+      <div class="tk">Empty flights state — icon, heading, subtext, and CTA centered in available space.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>Center</code> = <code>Align(alignment: Alignment.center)</code>. Use <code>mainAxisSize: MainAxisSize.min</code> on inner Column.</p><pre>Center(
+  child: Column(
+    mainAxisSize: MainAxisSize.min, // shrink-wrap the column
+    children: [
+      Icon(Icons.flight_off, size: 64, color: Colors.grey),
+      SizedBox(height: 16),
+      Text('No flights found', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
+      SizedBox(height: 8),
+      Text('Try changing your dates or destination', style: TextStyle(color: Colors.grey)),
+      SizedBox(height: 24),
+      ElevatedButton(child: Text('Modify Search'), onPressed: () {}),
+    ],
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing baseline text align price currency">
+      <div class="ch"><div class="cn bt">39</div><div class="ci"><div class="ct">Baseline-aligned price</div><div class="cw">Row · CrossAxisAlignment.baseline</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="display:flex;gap:10px;justify-content:center;align-items:flex-end;padding:10px 0">
+      <div style="text-align:center">
+        <div style="font-size:9px;color:#f06a6a;margin-bottom:4px">without Baseline</div>
+        <div style="display:flex;align-items:center;gap:2px;border:1px dashed #f06a6a;padding:4px;border-radius:4px">
+          <div style="font-size:10px;color:var(--t3)">₹</div>
+          <div style="font-size:22px;font-weight:700;color:#a897ff;line-height:1">8k</div>
+          <div style="font-size:9px;color:var(--t3)">/night</div>
+        </div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:9px;color:#3ecf8e;margin-bottom:4px">with Baseline</div>
+        <div style="display:flex;align-items:baseline;gap:2px;border:1px dashed #3ecf8e;padding:4px;border-radius:4px">
+          <div style="font-size:10px;color:var(--t3)">₹</div>
+          <div style="font-size:22px;font-weight:700;color:#a897ff;line-height:1">8k</div>
+          <div style="font-size:9px;color:var(--t3)">/night</div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">₹ symbol (small), price (large), '/night' (small) — all sharing a text baseline.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Set <code>textBaseline: TextBaseline.alphabetic</code> together with CrossAxisAlignment.baseline.</p><pre>Row(
+  crossAxisAlignment: CrossAxisAlignment.baseline,
+  textBaseline: TextBaseline.alphabetic,
+  children: [
+    Text('₹', style: TextStyle(fontSize: 14, color: Colors.grey)),
+    Text('8,499', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+    Text('/night', style: TextStyle(fontSize: 12, color: Colors.grey)),
+  ],
+)</pre></div>
+    </div>
+    <div class="card" data-tags="sizing table farecomparison row tablecell">
+      <div class="ch"><div class="cn bt">40</div><div class="ci"><div class="ct">Fare comparison table</div><div class="cw">Table · TableRow · TableCell</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="border:1px solid #2e2e3a;border-radius:6px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;background:#1e1e28">
+        <div style="padding:5px 8px"><div class="b2" style="width:50px;height:7px"></div></div>
+        <div style="padding:5px 8px;text-align:center"><div class="b2" style="width:30px;height:7px;margin:0 auto"></div></div>
+        <div style="padding:5px 8px;text-align:center;background:#2d2060"><div class="b3" style="width:30px;height:7px;margin:0 auto"></div></div>
+        <div style="padding:5px 8px;text-align:center"><div class="b2" style="width:30px;height:7px;margin:0 auto"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid #2e2e3a">
+        <div style="padding:5px 8px"><div class="b" style="width:60px"></div></div>
+        <div style="padding:5px 8px;text-align:center"><div class="b" style="width:20px;margin:0 auto"></div></div>
+        <div style="padding:5px 8px;text-align:center;background:#1a1528"><div class="b" style="width:20px;margin:0 auto"></div></div>
+        <div style="padding:5px 8px;text-align:center"><div class="b" style="width:20px;margin:0 auto"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;border-top:1px solid #2e2e3a;opacity:.6">
+        <div style="padding:5px 8px"><div class="b" style="width:50px"></div></div>
+        <div></div>
+        <div style="padding:5px 8px;text-align:center;background:#1a1528"><div class="b" style="width:16px;margin:0 auto"></div></div>
+        <div></div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Economy / Business / First class fare comparison — baggage, meals, refund, price rows.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Use <code>TableColumnWidth</code> to control column widths. <code>FlexColumnWidth</code> is proportional like Flexible.</p><pre>Table(
+  columnWidths: {
+    0: FlexColumnWidth(2),
+    1: FlexColumnWidth(1),
+    2: FlexColumnWidth(1),
+    3: FlexColumnWidth(1),
+  },
+  border: TableBorder.all(color: Colors.grey.shade200),
+  children: [
+    TableRow(
+      decoration: BoxDecoration(color: Colors.grey.shade100),
+      children: ['Feature', 'Economy', 'Business', 'First']
+        .map((h) => TableCell(child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Text(h, style: TextStyle(fontWeight: FontWeight.w600)),
+        ))).toList(),
+    ),
+    for (final row in fareRows)
+      TableRow(children: row.cells.map((c) =>
+        TableCell(child: Padding(padding: EdgeInsets.all(8), child: Text(c))),
+      ).toList()),
+  ],
+)</pre></div>
+    </div></div>
+</div>
+<div class="sec" data-cat="responsive">
+  <div class="st">Responsive &amp; Adaptive</div>
+  <div class="cards">
+    <div class="card" data-tags="responsive layoutbuilder breakpoint adaptive">
+      <div class="ch"><div class="cn bg">41</div><div class="ci"><div class="ct">Adaptive results layout</div><div class="cw">LayoutBuilder · BoxConstraints · breakpoints</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:5px">
+        <div class="fc" style="gap:3px">
+          <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:4px;padding:4px"><div class="b" style="width:80%;margin:0;height:6px"></div></div>
+          <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:4px;padding:4px;opacity:.6"><div class="b" style="width:65%;margin:0;height:6px"></div></div>
+        </div>
+        <div class="ann">&lt;600px — list</div>
+      </div>
+      <div style="flex:1.6;background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:5px">
+        <div class="g2" style="gap:3px">
+          <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:4px;padding:4px"><div class="b" style="width:80%;margin:0;height:6px"></div></div>
+          <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:4px;padding:4px"><div class="b" style="width:65%;margin:0;height:6px"></div></div>
+        </div>
+        <div class="ann">≥600px — 2-col grid</div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Search results: 1-col list on phone (<600px), 2-col grid on tablet (≥600px). No MediaQuery needed.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>LayoutBuilder</code> responds to parent width — better than MediaQuery for embedded widgets.</p><pre>LayoutBuilder(
+  builder: (context, constraints) {
+    if (constraints.maxWidth < 600) {
+      return ListView.builder(
+        itemCount: results.length,
+        itemBuilder: (_, i) => ResultCard(results[i]),
+      );
+    } else {
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 1.5,
+        ),
+        itemCount: results.length,
+        itemBuilder: (_, i) => ResultCard(results[i]),
+      );
+    }
+  },
+)</pre></div>
+    </div>
+    <div class="card" data-tags="responsive orientationbuilder landscape portrait form">
+      <div class="ch"><div class="cn bg">42</div><div class="ci"><div class="ct">Landscape 2-column form</div><div class="cw">OrientationBuilder · portrait / landscape</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+      <div style="background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:6px;width:90px">
+        <div class="fc" style="gap:3px"><div class="bh"></div><div class="bh"></div><div class="bh"></div><div class="bh" style="background:#2d2060"></div></div>
+        <div class="ann">portrait — 1 col</div>
+      </div>
+      <div style="background:#1a1a2a;border:1px dashed #2e2e3a;border-radius:6px;padding:6px;width:160px">
+        <div class="fr" style="gap:6px;align-items:flex-start">
+          <div style="flex:1" class="fc"><div class="bh"></div><div class="bh"></div></div>
+          <div style="flex:1" class="fc"><div class="bh"></div><div class="bh" style="background:#2d2060"></div></div>
+        </div>
+        <div class="ann">landscape — 2 col</div>
+      </div>
+    </div>
+  </div></div>
+      <div class="tk">Booking form — single column portrait, splits into side-by-side 2-col in landscape.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><pre>OrientationBuilder(
+  builder: (context, orientation) {
+    if (orientation == Orientation.portrait) {
+      return Column(children: [FromField(), ToField(), DateField(), SearchButton()]);
+    } else {
+      return Row(children: [
+        Expanded(child: Column(children: [FromField(), ToField()])),
+        SizedBox(width: 16),
+        Expanded(child: Column(children: [DateField(), SearchButton()])),
+      ]);
+    }
+  },
+)</pre></div>
+    </div>
+    <div class="card" data-tags="responsive wrap chips filter flow run">
+      <div class="ch"><div class="cn bg">43</div><div class="ci"><div class="ct">Filter chip wrap</div><div class="cw">Wrap · spacing · runSpacing</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">
+      <div style="height:12px;width:38px;border-radius:6px;background:#2d2060;border:1px solid #7c6af7"></div>
+      <div style="height:12px;width:30px;border-radius:6px;background:#2a2a34"></div>
+      <div style="height:12px;width:44px;border-radius:6px;background:#2a2a34"></div>
+      <div style="height:12px;width:34px;border-radius:6px;background:#2a2a34"></div>
+      <div style="height:12px;width:48px;border-radius:6px;background:#2a2a34"></div>
+      <div style="height:12px;width:32px;border-radius:6px;background:#2a2a34"></div>
+      <div style="height:12px;width:40px;border-radius:6px;background:#2a2a34"></div>
+    </div>
+    <div class="ann">chips wrap to next line automatically</div>
+  </div></div>
+      <div class="tk">Flight amenity filters — Non-stop, Morning, Under ₹5k — wrap naturally to next line.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>Wrap</code> is like Row but wraps. Use instead of Row when you don't know how many items fit.</p><pre>Wrap(
+  spacing: 8,    // horizontal gap between items
+  runSpacing: 8, // vertical gap between rows
+  children: filters.map((f) => FilterChip(
+    label: Text(f.label),
+    selected: f.isActive,
+    onSelected: (val) => setState(() => f.isActive = val),
+  )).toList(),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="responsive flow custom radial animated">
+      <div class="ch"><div class="cn bg">44</div><div class="ci"><div class="ct">Custom radial layout</div><div class="cw">Flow · FlowDelegate</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="position:relative;height:100px;border:1.5px dashed #2e2e3a;border-radius:6px">
+      <div class="cir" style="position:absolute;width:20px;height:20px;top:10px;left:10px;background:#7c6af7"></div>
+      <div class="cir" style="position:absolute;width:20px;height:20px;top:10px;left:38px;background:#7c6af7;opacity:.7"></div>
+      <div class="cir" style="position:absolute;width:20px;height:20px;top:10px;left:66px;background:#7c6af7;opacity:.4"></div>
+      <div class="cir" style="position:absolute;width:28px;height:28px;top:50px;left:20px;background:#3ecf8e;opacity:.6"></div>
+      <div class="cir" style="position:absolute;width:16px;height:16px;top:55px;left:60px;background:#f5a623;opacity:.5"></div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:8px;color:var(--t3);text-align:center">FlowDelegate<br>controls positions</div>
+    </div>
+  </div></div>
+      <div class="tk">FAB speed dial / radial menu — items animate from a central point. Each child's position computed per-frame.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>Flow</code> is repaint-efficient — only the delegate re-runs on animation tick, not full layout.</p><pre>class _RadialDelegate extends FlowDelegate {
+  final Animation<double> animation;
+  _RadialDelegate(this.animation) : super(repaint: animation);
+
+  @override
+  void paintChildren(FlowPaintingContext ctx) {
+    for (int i = 0; i < ctx.childCount; i++) {
+      final angle = i * (pi / 4); // 45° apart
+      final x = animation.value * 80 * cos(angle);
+      final y = animation.value * 80 * sin(angle);
+      ctx.paintChild(i, transform: Matrix4.translationValues(x, y, 0));
+    }
+  }
+
+  @override bool shouldRepaint(_) => true;
+}
+
+Flow(
+  delegate: _RadialDelegate(animController),
+  children: actions.map((a) => FABChild(a)).toList(),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="responsive interactiveviewer zoom pan pinch seatmap">
+      <div class="ch"><div class="cn bg">45</div><div class="ci"><div class="ct">Zoomable seat map</div><div class="cw">InteractiveViewer · pan · zoom</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="border:1px solid #2e2e3a;border-radius:6px;overflow:hidden;height:100px;display:flex;align-items:center;justify-content:center;position:relative">
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:4px">
+        <div style="width:10px;height:10px;background:#2d2060;border-radius:2px"></div>
+        <div style="width:10px;height:10px;background:#2d2060;border-radius:2px"></div>
+        <div style="width:2px"></div>
+        <div style="width:10px;height:10px;background:#2d2060;border-radius:2px"></div>
+        <div style="width:10px;height:10px;background:#2d2060;border-radius:2px"></div>
+        <div style="width:10px;height:10px;background:#3ecf8e;border-radius:2px"></div>
+        <div style="width:10px;height:10px;background:#2a2a34;border-radius:2px"></div>
+        <div style="width:10px;height:10px;background:#2a2a34;border-radius:2px"></div>
+        <div style="width:2px"></div>
+        <div style="width:10px;height:10px;background:#2a2a34;border-radius:2px"></div>
+        <div style="width:10px;height:10px;background:#3ecf8e;border-radius:2px"></div>
+        <div style="width:10px;height:10px;background:#2a2a34;border-radius:2px"></div>
+      </div>
+      <div style="position:absolute;bottom:4px;right:4px;font-size:8px;color:var(--t3)">pinch to zoom</div>
+    </div>
+  </div></div>
+      <div class="tk">Airplane seat map — pinch to zoom in, pan around. Green = available, purple = booked.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Set <code>boundaryMargin</code> so users can't pan the content completely off screen.</p><pre>InteractiveViewer(
+  boundaryMargin: EdgeInsets.all(20),
+  minScale: 0.8,
+  maxScale: 4.0,
+  child: SeatMapWidget(
+    seats: seats,
+    onSeatTap: (seat) => setState(() => _selected = seat),
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="responsive animatedswitcher crossfade transition tab">
+      <div class="ch"><div class="cn bg">46</div><div class="ci"><div class="ct">Tab content crossfade</div><div class="cw">AnimatedSwitcher · FadeTransition</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div class="fr" style="gap:6px;margin-bottom:8px">
+      <div style="flex:1;height:24px;border-radius:5px;background:#2d2060;border:1px solid #7c6af7;display:flex;align-items:center;justify-content:center"><div class="b3" style="width:30px"></div></div>
+      <div style="flex:1;height:24px;border-radius:5px;background:#1e1e28;border:1px solid #2e2e3a"></div>
+      <div style="flex:1;height:24px;border-radius:5px;background:#1e1e28;border:1px solid #2e2e3a"></div>
+    </div>
+    <div style="position:relative;height:50px;border:1px dashed #38bdf8;border-radius:5px;overflow:hidden">
+      <div style="position:absolute;inset:0;background:#1a1a2a;display:flex;align-items:center;padding:6px">
+        <div class="fc" style="gap:4px;width:100%"><div class="b" style="width:85%"></div><div class="b" style="width:65%;opacity:.5"></div></div>
+      </div>
+      <div style="position:absolute;bottom:4px;right:4px;font-size:8px;color:#38bdf8">crossfades on switch</div>
+    </div>
+  </div></div>
+      <div class="tk">Switching Flights / Hotels / Trains tabs crossfades content instead of hard-cutting.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Each child must have a unique <code>key</code> — that's how AnimatedSwitcher detects a change.</p><pre>AnimatedSwitcher(
+  duration: Duration(milliseconds: 300),
+  transitionBuilder: (child, animation) => FadeTransition(
+    opacity: animation,
+    child: child,
+  ),
+  child: KeyedSubtree(
+    key: ValueKey(_selectedTab), // change key = triggers animation
+    child: _buildTabContent(_selectedTab),
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="responsive animatedcrossfade expand collapse fare">
+      <div class="ch"><div class="cn bg">47</div><div class="ci"><div class="ct">Expandable fare details</div><div class="cw">AnimatedCrossFade · firstChild / secondChild</div></div></div>
+      <div class="wa"><div style="width:100%">
+    <div style="border:1px solid #2e2e3a;border-radius:6px;overflow:hidden">
+      <div class="fr spb" style="padding:8px 10px;background:#1e1e28">
+        <div class="b2" style="width:80px;height:9px"></div>
+        <div style="font-size:10px;color:#7c6af7">▼ expand</div>
+      </div>
+      <div style="padding:8px 10px;border-top:1px solid #2e2e3a">
+        <div class="b" style="width:90%;margin-bottom:3px"></div>
+        <div class="b" style="width:70%;opacity:.5;margin-bottom:3px"></div>
+        <div class="b" style="width:80%;opacity:.4"></div>
+      </div>
+    </div>
+    <div class="ann">animates height between collapsed ↕ expanded</div>
+  </div></div>
+      <div class="tk">Fare breakdown — collapsed shows total, expanded reveals base + taxes + fees with height animation.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p><code>AnimatedCrossFade</code> transitions between two widgets with both fade AND height animation.</p><pre>AnimatedCrossFade(
+  duration: Duration(milliseconds: 250),
+  crossFadeState: _isExpanded
+    ? CrossFadeState.showSecond
+    : CrossFadeState.showFirst,
+  firstChild: CollapsedFareRow(total: '₹8,499'),
+  secondChild: ExpandedFareBreakdown(
+    base: '₹7,200',
+    taxes: '₹899',
+    fees: '₹400',
+    total: '₹8,499',
+  ),
+)</pre></div>
+    </div>
+    <div class="card" data-tags="scroll sliver boss level combined full page">
+      <div class="ch"><div class="cn ba">50</div><div class="ci"><div class="ct">Full search results page ⚡</div><div class="cw">CustomScrollView — all slivers combined</div></div></div>
+      <div class="wa"><div class="phone"><div class="notch"></div>
+    <div style="font-size:7px;color:#7c6af7;margin-bottom:1px">SliverAppBar(floating, snap)</div>
+    <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:4px;padding:3px 5px;margin-bottom:3px">
+      <div class="fr"><div class="cir" style="width:8px;height:8px"></div><div style="flex:1;height:5px;background:#2a2a34;border-radius:2px;margin:0 3px"></div><div class="cir" style="width:8px;height:8px"></div></div>
+    </div>
+    <div style="font-size:7px;color:#38bdf8;margin-bottom:1px">SliverToBoxAdapter (chips)</div>
+    <div class="fr" style="gap:3px;margin-bottom:3px">
+      <div style="height:9px;width:24px;border-radius:4px;background:#2d2060;border:1px solid #7c6af7"></div>
+      <div style="height:9px;width:20px;border-radius:4px;background:#2a2a34"></div>
+      <div style="height:9px;width:28px;border-radius:4px;background:#2a2a34"></div>
+    </div>
+    <div style="font-size:7px;color:#f5a623;margin-bottom:1px">SliverPersistentHeader (sort)</div>
+    <div class="pin" style="margin-bottom:2px"><div class="b2" style="width:40%;margin:0"></div></div>
+    <div style="font-size:7px;color:#3ecf8e;margin-bottom:1px">SliverList (results)</div>
+    <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:4px;padding:4px;margin-bottom:2px"><div class="b" style="width:80%;height:5px"></div></div>
+    <div style="background:#1e1e28;border:1px solid #2e2e3a;border-radius:4px;padding:4px;opacity:.6"><div class="b" style="width:70%;height:5px"></div></div>
+  </div></div>
+      <div class="tk">Boss-level: floating search bar + filter chips + sticky sort header + lazy results. One unified scroll.</div>
+      <button class="ht" onclick="toggleHint(this)"><span>Show hint</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="hb"><p>Combine everything you've learned. Each part is a different sliver type.</p><pre>CustomScrollView(
+  slivers: [
+    // 1. floating+snap search bar
+    SliverAppBar(
+      floating: true, snap: true,
+      flexibleSpace: SearchBar(),
+    ),
+
+    // 2. filter chips (single widget)
+    SliverToBoxAdapter(child: FilterChipsRow()),
+
+    // 3. sort header (sticky)
+    SliverPersistentHeader(
+      pinned: true,
+      delegate: _SortHeader(sortOption: _sort),
+    ),
+
+    // 4. results list (lazy)
+    SliverPadding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (_, i) => FlightCard(results[i]),
+          childCount: results.length,
+        ),
+      ),
+    ),
+
+    // 5. load more / end
+    SliverFillRemaining(
+      hasScrollBody: false,
+      child: LoadMoreButton(),
+    ),
+  ],
+)</pre></div>
+    </div></div>
+</div>
+<footer><p>50 exercises covering every Flutter layout widget · click any "Show hint" to reveal code</p></footer>
+
+<script>
+function toggleHint(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+  btn.querySelector('span').textContent = isOpen ? 'Show hint' : 'Hide hint';
+}
+
+let currentFilter = 'all';
+
+function filterBy(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const query = document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.sec').forEach(section => {
+    const cat = section.getAttribute('data-cat');
+    const secMatch = currentFilter === 'all' || cat === currentFilter;
+    let anyVisible = false;
+
+    section.querySelectorAll('.card').forEach(card => {
+      const tags = card.getAttribute('data-tags') || '';
+      const title = card.querySelector('.ct')?.textContent.toLowerCase() || '';
+      const widget = card.querySelector('.cw')?.textContent.toLowerCase() || '';
+      const textMatch = !query || tags.includes(query) || title.includes(query) || widget.includes(query);
+      const visible = secMatch && textMatch;
+      card.style.display = visible ? '' : 'none';
+      if (visible) anyVisible = true;
+    });
+
+    section.style.display = anyVisible ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
